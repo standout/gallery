@@ -1,0 +1,37 @@
+#gallery_wrapper .options {
+	width: 100%;
+	height: 50px;
+	bottom: 0;
+	left: 0;
+	position: absolute;
+	background: transparent url('/options-bg.png') repeat;
+}
+
+	#gallery_wrapper .left, #gallery_wrapper .right {
+		width: 19px;
+		height: 29px;
+		top: 12px;
+		position: absolute;
+		cursor: pointer;
+	}
+
+	#gallery_wrapper .left {
+		left: 20px;
+		background: transparent url('/left.png') no-repeat;
+	}
+
+	#gallery_wrapper .right {
+		right: 20px;
+		background: transparent url('/right.png') no-repeat;
+	}
+
+	#gallery_wrapper .close {
+		width: 26px;
+		height: 29px;
+		margin-left: -13px;
+		top: 12px;
+		left: 50%;
+		position: absolute;
+		background: transparent url('/close.png') no-repeat;
+		cursor: pointer;
+	}
