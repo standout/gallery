@@ -25,7 +25,7 @@ Include the minified version for production and the unminified for development:
 When the DOM (or at least the HTML structure of your gallery) is loaded, find the gallery wrapper and call the gallery() method:
 
     $(document).ready(function() {
-        $('.gallery').ready();
+        $('.gallery').gallery();
     });
 
 ## CSS
