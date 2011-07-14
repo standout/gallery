@@ -25,6 +25,7 @@
 				display: 'none',
 				top: 0,
 				left: 0,
+				zIndex: 10000,
 				position: 'fixed',
 				opacity: 0
 			});
@@ -64,6 +65,7 @@
 			display: 'none',
 			top: 0,
 			left: 0,
+			zIndex: 10010,
 			position: 'fixed'
 		}).attr('id', 'gallery_wrapper').appendTo('body');
 		var options = $('<div class="options"><div class="left"></div><div class="close"></div><div class="right"></div></div>').css({
