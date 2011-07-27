@@ -206,7 +206,7 @@
 		};
 
 		var setImages = function() {
-			opts.element.children('a').each(function() {
+			opts.element.find('a').each(function() {
 				var image = createImage($(this));
 
 				images.push({
