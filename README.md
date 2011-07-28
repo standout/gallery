@@ -12,7 +12,7 @@ The structure could look something like this:
         <a href='/original_image_3.jpg'><img src='/thumbnail_3.jpg'></a>
     </div>
 
-Class names or the content inside the anchors don't really matters. What's important is that you easily can find the anchors with a selector.
+Class names or the content inside the anchors don't really matter. What's important is that you easily can find the anchors with a selector.
 
 ## JavaScript
 
