@@ -4,7 +4,7 @@ The usage is quite straight forward. What you need to do is define as many galle
 
 ## HTML
 
-The structure should look like this:
+The structure could look something like this:
 
     <div class='gallery'>
         <a href='/original_image.jpg'><img src='/thumbnail.jpg'></a>
@@ -12,9 +12,7 @@ The structure should look like this:
         <a href='/original_image_3.jpg'><img src='/thumbnail_3.jpg'></a>
     </div>
 
-* The id or class of the wrapper (in this case the class name is "gallery") could be anything you want.
-* The anchor elements should link to the images you want to show when the gallery is active (usually a bigger version).
-* The image elements should contain the listed images (usually thumbnails).
+Class names or the content inside the anchors don't really matters. What's important is that you easily can find the anchors with a selector.
 
 ## JavaScript
 
@@ -22,10 +20,10 @@ Include the minified version for production and the unminified for development:
 
     <script src='/gallery.min.js' type='text/javascript'></script>
 
-When the DOM (or at least the HTML structure of your gallery) is loaded, find the gallery wrapper and call the gallery() method:
+When the DOM (or at least the HTML structure of your gallery) is loaded, find the anchors and call the gallery() method on the jQuery object:
 
     $(document).ready(function() {
-        $('.gallery').gallery();
+        $('.gallery a').gallery();
     });
 
 ## CSS
