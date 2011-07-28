@@ -12,17 +12,19 @@
 		</style>
 		<script type='text/javascript'>
 			$(function() {
-				$('.gallery').gallery();
+				$('.gallery a').gallery({
+					title: true
+				});
 			});
 		</script>
 	</head>
 	<body>
 		<div class='gallery'>
 			<a href='/images/bird.jpg'><img src='/images/bird.jpg'></a>
-			<a href='/images/eagle.jpg'><img src='/images/eagle.jpg'></a>
-			<a href='/images/lake.jpg'><img src='/images/lake.jpg'></a>
-			<a href='/images/rabbit.jpg'><img src='/images/rabbit.jpg'></a>
-			<a href='/images/road.jpg'><img src='/images/road.jpg'></a>
+			<a title='Eagle' href='/images/eagle.jpg'><img src='/images/eagle.jpg'></a>
+			<a title='Lake' href='/images/lake.jpg'><img src='/images/lake.jpg'></a>
+			<a title='Rabbit' href='/images/rabbit.jpg'><img src='/images/rabbit.jpg'></a>
+			<a title='Road' href='/images/road.jpg'><img src='/images/road.jpg'></a>
 		</div>
 	</body>
 </html>

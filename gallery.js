@@ -72,14 +72,15 @@
 			display: 'none',
 			opacity: 0
 		});
+		var title = $('<div/>').addClass('title');
+		var triggers = $();
 		var images = [];
 		var current;
+		var index;
 		var active = false;
 		var optionsTimeout;
 
 		var init = function() {
-			setImages();
-
 			wrapper.delegate('div', 'click', function() {
 				switch(this.className) {
 					case 'right':
@@ -94,23 +95,24 @@
 				}
 			});
 
-			opts.element.delegate('a', 'click', function() {
-				show(getImage(this));
+			$(document).delegate(opts.selector, 'click', function() {
+				show($(this));
 				return false;
 			});
 
 			$(window).resize(resize);
-			$(window).keydown(keymap);
-			$(window).mousemove(showOptions);
+			$(document).keydown(keymap);
+			$(document).mousemove(showOptions);
 		};
 
 		var show = function(image) {
 			active = true;
-			current = image;
+			index = getIndex(image);
+			current = images[index];
 			Utils.showDark();
 			wrapper.css('display', 'block');
 			resizeImage();
-			showImage();	
+			showImage();
 		};
 
 		var hide = function() {
@@ -124,8 +126,10 @@
 			if(optionsTimeout) {
 				window.clearTimeout(optionsTimeout);
 
-				current.wrapper.children('.options').animate({opacity: 0}, opts.animationSpeed, function() {
-					$(this).css('display', 'none');
+				current.wrapper.children('.options, .title').each(function() {
+					$(this).animate({opacity: 0}, opts.animationSpeed, function() {
+						$(this).remove();
+					});
 				});
 			}
 
@@ -139,15 +143,15 @@
 		};
 
 		var next = function() {
-			var image = current.trigger.next().length ? current.trigger.next() : opts.element.children('a').eq(0);
-			current = getImage(image);
+			index = images[index + 1] ? index + 1 : 0;
+			current = images[index];
 			resizeImage();
 			showImage();
 		};
 
 		var previous = function() {
-			var index = opts.element.children('a').index(current.trigger);
-			current = index - 1 < 0 ? images[images.length - 1] : images[index - 1];
+			index = images[index - 1] ? index - 1 : images.length - 1;
+			current = images[index];
 			resizeImage();
 			showImage();
 		};
@@ -158,7 +162,12 @@
 			}
 
 			current.wrapper.animate({opacity: 1}, opts.animationSpeed);
-			current.wrapper.append(options);
+			current.wrapper.append(options.clone());
+			showOptions();
+
+			if(opts.title && current.trigger.attr('title')) {
+				current.wrapper.prepend(title.clone().text(current.trigger.attr('title')));
+			}
 		};
 
 		var resize = function() {
@@ -201,34 +210,8 @@
 			});
 		};
 
-		var getImage = function(element) {
-			return images[opts.element.children('a').index($(element))];
-		};
-
-		var setImages = function() {
-			opts.element.find('a').each(function() {
-				var image = createImage($(this));
-
-				images.push({
-					trigger: $(this),
-					wrapper: image,
-					copy: image.children('img')
-				});
-			});
-		};
-
-		var createImage = function(trigger) {
-			var image = $('<div><img/></div>').css({
-				display: 'none',
-				opacity: 0,
-				position: 'absolute',
-				'-ms-interpolation-mode': 'bicubic'
-			}).appendTo(wrapper);
-
-			image.children('img').attr('src', trigger.attr('href'));
-			wrapper.append(options);
-
-			return image;
+		var getIndex = function(element) {
+			return triggers.index($(element));
 		};
 
 		var keymap = function(e) {
@@ -267,6 +250,31 @@
 			}
 		};
 
+		var createImage = function(trigger) {
+			var image = $('<div><img/></div>').css({
+				display: 'none',
+				opacity: 0,
+				position: 'absolute',
+				'-ms-interpolation-mode': 'bicubic'
+			}).appendTo(wrapper);
+
+			image.children('img').attr('src', trigger.attr('href'));
+			wrapper.append(options);
+
+			return image;
+		};
+
+		this.setImage = function(trigger) {
+			triggers = triggers.add(trigger);
+			var image = createImage(trigger);
+
+			images.push({
+				trigger: trigger,
+				wrapper: image,
+				copy: image.children('img')
+			});
+		};
+
 		init();
 	};
 	
@@ -274,13 +282,16 @@
 		Utils = new Utils($.extend({
 			animationSpeed: 200
 		}), opts);
+
+		Gallery = new Gallery($.extend({
+			maxSize: 0.9,
+			animationSpeed: 200,
+			selector: this.selector,
+			title: false
+		}, opts));
 		
 		return this.each(function() {
-			new Gallery($.extend({
-				element: $(this),
-				maxSize: 0.9,
-				animationSpeed: 200
-			}, opts));
+			Gallery.setImage($(this));
 		});
 	};
 })(jQuery);
