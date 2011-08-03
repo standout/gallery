@@ -8,7 +8,7 @@
 		bottom: 0;
 		left: 0;
 		position: absolute;
-		background: transparent url('/options-bg.png') repeat;
+		background: transparent url('options-bg.png') repeat;
 	}
 
 		#gallery_wrapper .left, #gallery_wrapper .right {
@@ -21,12 +21,12 @@
 
 		#gallery_wrapper .left {
 			left: 20px;
-			background: transparent url('/left.png') no-repeat;
+			background: transparent url('left.png') no-repeat;
 		}
 
 		#gallery_wrapper .right {
 			right: 20px;
-			background: transparent url('/right.png') no-repeat;
+			background: transparent url('right.png') no-repeat;
 		}
 
 		#gallery_wrapper .close {
@@ -36,7 +36,7 @@
 			top: 12px;
 			left: 50%;
 			position: absolute;
-			background: transparent url('/close.png') no-repeat;
+			background: transparent url('close.png') no-repeat;
 			cursor: pointer;
 		}
 
@@ -46,7 +46,7 @@
 		top: 0;
 		left: 0;
 		position: absolute;
-		background: transparent url('/options-bg.png') repeat;
+		background: transparent url('options-bg.png') repeat;
 		font-size: 12px;
 		line-height: 30px;
 		color: #fff;
