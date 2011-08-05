@@ -1,297 +1,308 @@
 (function($) {
-	var Utils = function(opts) {
-		var dark;
+    var Utils = function(opts) {
+        var dark;
 
-		var init = function() {
-			dark = setDark();
-			resizeDark();	
-		};
+        var init = function() {
+            dark = setDark();
+            resizeDark();   
+        };
 
-		var setDark = function() {
-			var element = $('<canvas/>').appendTo('body');
+        var setDark = function() {
+            var element = $('<canvas/>').appendTo('body');
 
-			if(element[0].getContext) {
-				$(window).resize(resizeDark);
-			} else {
-				element.remove();
-				element = $('<div/>').appendTo('body').css({
-					width: '100%',
-					height: '100%',
-					backgroundColor: '#000'
-				});
-			}
+            if(element[0].getContext) {
+                $(window).resize(resizeDark);
+            } else {
+                element.remove();
+                element = $('<div/>').appendTo('body').css({
+                    width: '100%',
+                    height: '100%',
+                    backgroundColor: '#000'
+                });
+            }
 
-			return element.css({
-				display: 'none',
-				top: 0,
-				left: 0,
-				zIndex: 10000,
-				position: 'fixed',
-				opacity: 0
-			});
-		};
+            return element.css({
+                display: 'none',
+                top: 0,
+                left: 0,
+                zIndex: 10000,
+                position: 'fixed',
+                opacity: 0
+            });
+        };
 
-		var resizeDark = function() {
-			if(dark[0].getContext) {
-				var width = $(window).width();
-				var height = $(window).height();
-				var ctx = dark[0].getContext('2d');
-				dark.attr({width: width, height: height});
+        var resizeDark = function() {
+            if(dark[0].getContext) {
+                var width = $(window).width();
+                var height = $(window).height();
+                var ctx = dark[0].getContext('2d');
+                dark.attr({width: width, height: height});
 
-				var gradient = ctx.createRadialGradient(width / 2, height / 2, 0, width / 2, height / 2, height * 1.3);
-				gradient.addColorStop(0, 'rgba(0,0,0,0.25)');
-				gradient.addColorStop(1, '#000');
+                var gradient = ctx.createRadialGradient(width / 2, height / 2, 0, width / 2, height / 2, height * 1.3);
+                gradient.addColorStop(0, 'rgba(0,0,0,0.25)');
+                gradient.addColorStop(1, '#000');
 
-				ctx.fillStyle = gradient;
-				ctx.fillRect(0, 0, width, height);
-			}
-		};
+                ctx.fillStyle = gradient;
+                ctx.fillRect(0, 0, width, height);
+            }
+        };
 
-		this.showDark = function() {
-			dark.css('display', 'block').animate({opacity: 0.75}, opts.animationSpeed);
-		};
+        this.showDark = function() {
+            dark.css('display', 'block').animate({opacity: 0.75}, opts.animationSpeed);
+        };
 
-		this.hideDark = function() {
-			dark.animate({opacity: 0}, opts.animationSpeed, function() {
-				dark.css('display', 'none');
-			});
-		};
+        this.hideDark = function() {
+            dark.animate({opacity: 0}, opts.animationSpeed, function() {
+                dark.css('display', 'none');
+            });
+        };
 
-		init();
-	};
-	
-	var Gallery = function(opts) {
-		var wrapper = $('<div/>').css({
-			display: 'none',
-			top: 0,
-			left: 0,
-			zIndex: 10010,
-			position: 'fixed'
-		}).attr('id', 'gallery_wrapper').appendTo('body');
-		var options = $('<div class="options"><div class="left"></div><div class="close"></div><div class="right"></div></div>').css({
-			display: 'none',
-			opacity: 0
-		});
-		var title = $('<div/>').addClass('title');
-		var triggers = $();
-		var images = [];
-		var current;
-		var index;
-		var active = false;
-		var optionsTimeout;
+        init();
+    };
+    
+    var Gallery = function(opts) {
+        var wrapper = $('<div/>').css({
+            display: 'none',
+            top: 0,
+            left: 0,
+            zIndex: 10010,
+            position: 'fixed'
+        }).attr('id', 'gallery_wrapper').appendTo('body');
+        var options = $('<div class="options"><div class="left"></div><div class="close"></div><div class="right"></div></div>').css({
+            display: 'none',
+            opacity: 0
+        });
+        var title = $('<div/>').addClass('title');
+        var triggers = $();
+        var images = [];
+        var current;
+        var index;
+        var active = false;
+        var optionsTimeout;
 
-		var init = function() {
-			wrapper.delegate('div', 'click', function() {
-				switch(this.className) {
-					case 'right':
-						hideImage(next);
-						break;
-					case 'left':
-						hideImage(previous);
-						break;
-					case 'close':
-						hide();
-						break;
-				}
-			});
+        var init = function() {
+            wrapper.delegate('div', 'click', function() {
+                switch(this.className) {
+                    case 'right':
+                        hideImage(next);
+                        break;
+                    case 'left':
+                        hideImage(previous);
+                        break;
+                    case 'close':
+                        hide();
+                        break;
+                }
+            });
 
-			$(document).delegate(opts.selector, 'click', function() {
-				show($(this));
-				return false;
-			});
+            $(document).delegate(opts.selector, 'click', function() {
+                show($(this));
+                return false;
+            });
 
-			$(window).resize(resize);
-			$(document).keydown(keymap);
-			$(document).mousemove(showOptions);
-		};
+            $(window).resize(resize);
+            $(document).keydown(keymap);
+            $(document).mousemove(showOptions);
+        };
 
-		var show = function(image) {
-			active = true;
-			index = getIndex(image);
-			current = images[index];
-			Utils.showDark();
-			wrapper.css('display', 'block');
-			resizeImage();
-			showImage();
-		};
+        var show = function(image) {
+            active = true;
+            index = getIndex(image);
+            current = images[index];
+            
+            if(opts.hideEmbeds) {
+                $('iframe, embed, select').css('visibility', 'hidden');
+            }
 
-		var hide = function() {
-			active = false;
-			Utils.hideDark();
-			wrapper.css('display', 'none');
-			hideImage();
-		};
+            Utils.showDark();
+            wrapper.css('display', 'block');
+            resizeImage();
+            showImage();
+        };
 
-		var hideImage = function(callback) {
-			if(optionsTimeout) {
-				window.clearTimeout(optionsTimeout);
+        var hide = function() {
+            active = false;
 
-				current.wrapper.children('.options, .title').each(function() {
-					$(this).animate({opacity: 0}, opts.animationSpeed, function() {
-						$(this).remove();
-					});
-				});
-			}
+            if(opts.hideEmbeds) {
+                $('iframe, embed, select').css('visibility', 'visible');
+            }
 
-			current.wrapper.animate({opacity: 0}, opts.animationSpeed, function() {
-				current.wrapper.css('display', 'none');
-				
-				if(callback) {
-					callback();
-				}
-			});
-		};
+            Utils.hideDark();
+            wrapper.css('display', 'none');
+            hideImage();
+        };
 
-		var next = function() {
-			index = images[index + 1] ? index + 1 : 0;
-			current = images[index];
-			resizeImage();
-			showImage();
-		};
+        var hideImage = function(callback) {
+            if(optionsTimeout) {
+                window.clearTimeout(optionsTimeout);
 
-		var previous = function() {
-			index = images[index - 1] ? index - 1 : images.length - 1;
-			current = images[index];
-			resizeImage();
-			showImage();
-		};
+                current.wrapper.children('.options, .title').each(function() {
+                    $(this).animate({opacity: 0}, opts.animationSpeed, function() {
+                        $(this).remove();
+                    });
+                });
+            }
 
-		var showImage = function() {
-			if(optionsTimeout) {
-				window.clearTimeout(optionsTimeout);
-			}
+            current.wrapper.animate({opacity: 0}, opts.animationSpeed, function() {
+                current.wrapper.css('display', 'none');
+                
+                if(callback) {
+                    callback();
+                }
+            });
+        };
 
-			current.wrapper.animate({opacity: 1}, opts.animationSpeed);
-			current.wrapper.append(options.clone());
-			showOptions();
+        var next = function() {
+            index = images[index + 1] ? index + 1 : 0;
+            current = images[index];
+            resizeImage();
+            showImage();
+        };
 
-			if(opts.title && current.trigger.attr('title')) {
-				current.wrapper.prepend(title.clone().text(current.trigger.attr('title')));
-			}
-		};
+        var previous = function() {
+            index = images[index - 1] ? index - 1 : images.length - 1;
+            current = images[index];
+            resizeImage();
+            showImage();
+        };
 
-		var resize = function() {
-			resizeImage();
-		};
+        var showImage = function() {
+            if(optionsTimeout) {
+                window.clearTimeout(optionsTimeout);
+            }
 
-		var resizeImage = function() {
-			current.wrapper.css('display', 'block');
+            current.wrapper.animate({opacity: 1}, opts.animationSpeed);
+            current.wrapper.append(options.clone());
+            showOptions();
 
-			if(!current.copy.data('width')) {
-				current.copy.data('width', current.copy.width());
-				current.copy.data('height', current.copy.height());
-			}
+            if(opts.title && current.trigger.attr('title')) {
+                current.wrapper.prepend(title.clone().text(current.trigger.attr('title')));
+            }
+        };
 
-			var windowWidth = $(window).width();
-			var windowHeight = $(window).height();
-			var width = current.copy.data('width');
-			var height = current.copy.data('height');
+        var resize = function() {
+            resizeImage();
+        };
 
-			if(width > windowWidth * opts.maxSize || height > windowHeight * opts.maxSize) {
-				width = windowWidth * opts.maxSize;
-				height = (current.copy.data('height') / current.copy.data('width')) * width;
+        var resizeImage = function() {
+            current.wrapper.css('display', 'block');
 
-				if(height > current.copy.data('height') * opts.maxSize) {
-					height = windowHeight * opts.maxSize;
-					width = (current.copy.data('width') / current.copy.data('height')) * height;
-				}
-			}
+            if(!current.copy.data('width')) {
+                current.copy.data('width', current.copy.width());
+                current.copy.data('height', current.copy.height());
+            }
 
-			current.wrapper.css({
-				width: width,
-				height: height,
-				top: (windowHeight - height) * 0.5,
-				left: (windowWidth - width) * 0.5
-			});
+            var windowWidth = $(window).width();
+            var windowHeight = $(window).height();
+            var width = current.copy.data('width');
+            var height = current.copy.data('height');
 
-			current.copy.css({
-				width: width,
-				height: height
-			});
-		};
+            if(width > windowWidth * opts.maxSize || height > windowHeight * opts.maxSize) {
+                width = windowWidth * opts.maxSize;
+                height = (current.copy.data('height') / current.copy.data('width')) * width;
 
-		var getIndex = function(element) {
-			return triggers.index($(element));
-		};
+                if(height > current.copy.data('height') * opts.maxSize) {
+                    height = windowHeight * opts.maxSize;
+                    width = (current.copy.data('width') / current.copy.data('height')) * height;
+                }
+            }
 
-		var keymap = function(e) {
-			if(active) {
-				switch(e.which) {
-					case 39:
-						hideImage(next);
-						break;
-					case 37:
-						hideImage(previous);
-						break;
-					case 27:
-						hide();
-						break;
-				}
-			}
-		};
+            current.wrapper.css({
+                width: width,
+                height: height,
+                top: (windowHeight - height) * 0.5,
+                left: (windowWidth - width) * 0.5
+            });
 
-		var showOptions = function() {
-			if(active) {
-				var element = current.wrapper.children('.options');
-				
-				if(element.is(':hidden')) {
-					element.css('display', 'block').animate({opacity: 1}, opts.animationSpeed);	
-				}
+            current.copy.css({
+                width: width,
+                height: height
+            });
+        };
 
-				if(optionsTimeout) {
-					window.clearTimeout(optionsTimeout);
-				}
+        var getIndex = function(element) {
+            return triggers.index($(element));
+        };
 
-				optionsTimeout = window.setTimeout(function() {
-					element.animate({opacity: 0}, opts.animationSpeed, function() {
-						$(this).css('display', 'none');
-					});
-				}, 2000);
-			}
-		};
+        var keymap = function(e) {
+            if(active) {
+                switch(e.which) {
+                    case 39:
+                        hideImage(next);
+                        break;
+                    case 37:
+                        hideImage(previous);
+                        break;
+                    case 27:
+                        hide();
+                        break;
+                }
+            }
+        };
 
-		var createImage = function(trigger) {
-			var image = $('<div><img/></div>').css({
-				display: 'none',
-				opacity: 0,
-				position: 'absolute',
-				'-ms-interpolation-mode': 'bicubic'
-			}).appendTo(wrapper);
+        var showOptions = function() {
+            if(active) {
+                var element = current.wrapper.children('.options');
+                
+                if(element.is(':hidden')) {
+                    element.css('display', 'block').animate({opacity: 1}, opts.animationSpeed); 
+                }
 
-			image.children('img').attr('src', trigger.attr('href'));
-			wrapper.append(options);
+                if(optionsTimeout) {
+                    window.clearTimeout(optionsTimeout);
+                }
 
-			return image;
-		};
+                optionsTimeout = window.setTimeout(function() {
+                    element.animate({opacity: 0}, opts.animationSpeed, function() {
+                        $(this).css('display', 'none');
+                    });
+                }, 2000);
+            }
+        };
 
-		this.setImage = function(trigger) {
-			triggers = triggers.add(trigger);
-			var image = createImage(trigger);
+        var createImage = function(trigger) {
+            var image = $('<div><img/></div>').css({
+                display: 'none',
+                opacity: 0,
+                position: 'absolute',
+                '-ms-interpolation-mode': 'bicubic'
+            }).appendTo(wrapper);
 
-			images.push({
-				trigger: trigger,
-				wrapper: image,
-				copy: image.children('img')
-			});
-		};
+            image.children('img').attr('src', trigger.attr('href'));
+            wrapper.append(options);
 
-		init();
-	};
-	
-	$.fn.gallery = function(opts) {
-		Utils = new Utils($.extend({
-			animationSpeed: 200
-		}), opts);
+            return image;
+        };
 
-		Gallery = new Gallery($.extend({
-			maxSize: 0.9,
-			animationSpeed: 200,
-			selector: this.selector,
-			title: false
-		}, opts));
-		
-		return this.each(function() {
-			Gallery.setImage($(this));
-		});
-	};
+        this.setImage = function(trigger) {
+            triggers = triggers.add(trigger);
+            var image = createImage(trigger);
+
+            images.push({
+                trigger: trigger,
+                wrapper: image,
+                copy: image.children('img')
+            });
+        };
+
+        init();
+    };
+    
+    $.fn.gallery = function(opts) {
+        Utils = new Utils($.extend({
+            animationSpeed: 200
+        }), opts);
+
+        Gallery = new Gallery($.extend({
+            maxSize: 0.9,
+            animationSpeed: 200,
+            selector: this.selector,
+            title: false,
+            hideEmbeds: false
+        }, opts));
+        
+        return this.each(function() {
+            Gallery.setImage($(this));
+        });
+    };
 })(jQuery);
