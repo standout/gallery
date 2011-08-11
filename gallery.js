@@ -113,11 +113,20 @@
             if(opts.hideEmbeds) {
                 $('iframe, embed, select').css('visibility', 'hidden');
             }
+            
+            if(opts.autoPlay) {
+              autoPlayTimeout = window.setTimeout(auto_show_next, 5000);
+            }
 
             Utils.showDark();
             wrapper.css('display', 'block');
             resizeImage();
             showImage();
+        };
+        
+        var auto_show_next = function() {
+          hideImage(next);
+          autoPlayTimeout = window.setTimeout(auto_show_next, 5000);
         };
 
         var hide = function() {
@@ -125,6 +134,10 @@
 
             if(opts.hideEmbeds) {
                 $('iframe, embed, select').css('visibility', 'visible');
+            }
+            
+            if(opts.autoPlay) {
+              window.clearTimeout(autoPlayTimeout);
             }
 
             Utils.hideDark();
@@ -298,7 +311,8 @@
             animationSpeed: 200,
             selector: this.selector,
             title: false,
-            hideEmbeds: false
+            hideEmbeds: false,
+            autoPlay: false
         }, opts));
         
         return this.each(function() {

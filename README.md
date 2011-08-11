@@ -48,6 +48,7 @@ When calling the gallery() method you can pass the following options.
 * animationSpeed (200) - How long all the animations are running (in milliseconds).
 * title (false) - Show a title on the images if the <a> has a title attribute.
 * hideEmbeds (false) - Hide flash and other elements which may have higher z-index than the gallery.
+* autoPlay (false) - Automatically loop through the gallery, switching images every five seconds.
 
 ### Example
 
@@ -55,7 +56,8 @@ When calling the gallery() method you can pass the following options.
 $(function() {
     $('.gallery a').gallery({
         maxSize: 0.5,
-        title: true
+        title: true,
+        autoPlay: true
     });
 });
 ```
