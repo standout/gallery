@@ -1,6 +1,6 @@
 # Usage
 
-The usage is quite straight forward. What you need to do is define as many galleries as you want in the DOM, wrap the galleries to a (or several) jQuery object and then call the gallery() method. To set some style on your gallery you could either include the default CSS template or you could write your own.
+The usage is quite straight forward. What you need to do is define as many galleries as you want in the DOM, wrap the galleries to a (or several) jQuery object and then call the `gallery()` method. To set some style on your gallery you could either include the default CSS template or you could write your own.
 
 ## HTML
 
@@ -24,7 +24,7 @@ Include the minified version for production and the unminified for development:
 <script src='/javascripts/gallery.min.js' type='text/javascript'></script>
 ```
 
-When the DOM (or at least the HTML structure of your gallery) is loaded, find the anchors and call the gallery() method on the jQuery object:
+When the DOM (or at least the HTML structure of your gallery) is loaded, find the anchors and call the `gallery()` method on the jQuery object:
 
 ```javascript
 $(document).ready(function() {
@@ -44,11 +44,11 @@ You'll probably want some style on your gallery. Either write your own or includ
 
 When calling the gallery() method you can pass the following options.
 
-* maxSize (0.9) - Maximum size of the images when they are showed, in relation to the viewport.
-* animationSpeed (200) - How long all the animations are running (in milliseconds).
-* title (false) - Show a title on the images if the <a> has a title attribute.
-* hideEmbeds (false) - Hide flash and other elements which may have higher z-index than the gallery.
-* autoPlay (false) - Automatically loop through the gallery, switching images every five seconds.
+* `maxSize` (0.9) - Maximum size of the images when they are showed, in relation to the viewport.
+* `animationSpeed` (200) - How long all the animations are running (in milliseconds).
+* `title` (false) - Show a title on the images if the `<a>` has a title attribute.
+* `hideEmbeds` (false) - Hide flash and other elements which may have higher z-index than the gallery.
+* `autoPlay` (false) - Automatically loop through the gallery, switching images every five seconds.
 
 ### Example
 
@@ -61,13 +61,3 @@ $(function() {
     });
 });
 ```
-
-# How to run the example
-
-In your terminal, type (requires Ruby to be installed on your computer):
-
-    $ cd example
-    $ gem install sinatra
-    $ rackup
-
-And now, go to localhost:9292.
