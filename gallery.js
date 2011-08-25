@@ -75,10 +75,8 @@
         var title = $('<div/>').addClass('title');
         var triggers = $();
         var images = [];
-        var current;
-        var index;
         var active = false;
-        var optionsTimeout;
+        var current, index, optionsTimeout, autoPlayInterval;
 
         var init = function() {
             wrapper.delegate('div', 'click', function() {
@@ -113,10 +111,6 @@
             if(opts.hideEmbeds) {
                 $('iframe, embed, select').css('visibility', 'hidden');
             }
-            
-            if(opts.autoPlay) {
-              autoPlayTimeout = window.setTimeout(auto_show_next, 5000);
-            }
 
             Utils.showDark();
             wrapper.css('display', 'block');
@@ -124,9 +118,8 @@
             showImage();
         };
         
-        var auto_show_next = function() {
-          hideImage(next);
-          autoPlayTimeout = window.setTimeout(auto_show_next, 5000);
+        var autoShow = function() {
+            hideImage(next);
         };
 
         var hide = function() {
@@ -137,7 +130,7 @@
             }
             
             if(opts.autoPlay) {
-              window.clearTimeout(autoPlayTimeout);
+                window.clearInterval(autoPlayInterval);
             }
 
             Utils.hideDark();
@@ -154,6 +147,10 @@
                         $(this).remove();
                     });
                 });
+            }
+
+            if(opts.autoPlay) {
+                window.clearInterval(autoPlayInterval);
             }
 
             current.wrapper.animate({opacity: 0}, opts.animationSpeed, function() {
@@ -182,6 +179,10 @@
         var showImage = function() {
             if(optionsTimeout) {
                 window.clearTimeout(optionsTimeout);
+            }
+
+            if(opts.autoPlay) {
+                autoPlayInterval = window.setInterval(autoShow, 5000);
             }
 
             current.wrapper.animate({opacity: 1}, opts.animationSpeed);
