@@ -49,6 +49,7 @@ When calling the gallery() method you can pass the following options.
 * `title` (false) - Show a title on the images if the `<a>` has a title attribute.
 * `hideEmbeds` (false) - Hide flash and other elements which may have higher z-index than the gallery.
 * `autoPlay` (false) - Automatically loop through the gallery, switching images every five seconds.
+* `noMobile` (false) - If set to true, the gallery will have no support for mobile devices (links will simply redirect the user to the images).
 
 ### Example
 

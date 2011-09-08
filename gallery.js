@@ -79,7 +79,11 @@
         var current, index, optionsTimeout, autoPlayInterval;
 
         var init = function() {
-            wrapper.delegate('div', 'click', function() {
+            wrapper.delegate('div', 'click', function(e) {
+                if(e.target == current.copy[0]) {
+                    hideImage(next);    
+                }
+
                 switch(this.className) {
                     case 'right':
                         hideImage(next);
@@ -299,7 +303,9 @@
             });
         };
 
-        init();
+        if(!(opts.noMobile && (/mobile/i).test(navigator.userAgent))) {
+            init();
+        }
     };
     
     $.fn.gallery = function(opts) {
@@ -313,7 +319,8 @@
             selector: this.selector,
             title: false,
             hideEmbeds: false,
-            autoPlay: false
+            autoPlay: false,
+            noMobile: false
         }, opts));
         
         return this.each(function() {
