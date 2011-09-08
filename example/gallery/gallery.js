@@ -1,3 +1,9 @@
+/**
+ * Standout gallery v0.0.1
+ *
+ * Copyright 2011, Standout AB, http://standout.se
+ * License: MIT
+ */
 (function($) {
     var Utils = function(opts) {
         var dark;

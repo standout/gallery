@@ -2,6 +2,8 @@
 
 The usage is quite straight forward. What you need to do is define as many galleries as you want in the DOM, wrap the galleries to a (or several) jQuery object and then call the `gallery()` method. To set some style on your gallery you could either include the default CSS template or you could write your own.
 
+Latest stable version is `0.0.1`.
+
 ## HTML
 
 The structure could look something like this:
