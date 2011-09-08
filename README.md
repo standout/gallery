@@ -2,6 +2,8 @@
 
 The usage is quite straight forward. What you need to do is define as many galleries as you want in the DOM, wrap the galleries to a (or several) jQuery object and then call the `gallery()` method. To set some style on your gallery you could either include the default CSS template or you could write your own.
 
+Latest stable version is `0.0.1`.
+
 ## HTML
 
 The structure could look something like this:
@@ -49,6 +51,7 @@ When calling the gallery() method you can pass the following options.
 * `title` (false) - Show a title on the images if the `<a>` has a title attribute.
 * `hideEmbeds` (false) - Hide flash and other elements which may have higher z-index than the gallery.
 * `autoPlay` (false) - Automatically loop through the gallery, switching images every five seconds.
+* `noMobile` (false) - If set to true, the gallery will have no support for mobile devices (links will simply redirect the user to the images).
 
 ### Example
 
