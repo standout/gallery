@@ -2,7 +2,7 @@
 
 The usage is quite straight forward. What you need to do is define as many galleries as you want in the DOM, wrap the galleries to a (or several) jQuery object and then call the `gallery()` method. To set some style on your gallery you could either include the default CSS template or you could write your own.
 
-Latest stable version is `0.0.1`.
+Latest stable version is `0.0.2`.
 
 ## HTML
 
@@ -48,6 +48,8 @@ When calling the gallery() method you can pass the following options.
 
 * `maxSize` (0.9) - Maximum size of the images when they are showed, in relation to the viewport.
 * `animationSpeed` (200) - How long all the animations are running (in milliseconds).
+* `parent` - The wrapper for the links. May be interesting to override if your links aren't direct children of the wrapper.
+* `selector` ('a') - The selector to use when searching for triggers (links) in the wrapper.
 * `title` (false) - Show a title on the images if the `<a>` has a title attribute.
 * `hideEmbeds` (false) - Hide flash and other elements which may have higher z-index than the gallery.
 * `autoPlay` (false) - Automatically loop through the gallery, switching images every five seconds.

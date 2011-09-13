@@ -1,5 +1,5 @@
 /**
- * Standout gallery v0.0.1
+ * Standout gallery v0.0.2
  *
  * Copyright 2011, Standout AB, http://standout.se
  * License: MIT
