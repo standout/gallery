@@ -103,9 +103,9 @@
                 }
             });
 
-            $(document).delegate(opts.selector, 'click', function() {
-                show($(this));
-                return false;
+            opts.parent.delegate(opts.selector, 'click', function(e) {
+                e.preventDefault();
+                show($(e.currentTarget));
             });
 
             $(window).resize(resize);
@@ -122,7 +122,7 @@
                 $('iframe, embed, select').css('visibility', 'hidden');
             }
 
-            Utils.showDark();
+            opts.utils.showDark();
             wrapper.css('display', 'block');
             resizeImage();
             showImage();
@@ -143,7 +143,7 @@
                 window.clearInterval(autoPlayInterval);
             }
 
-            Utils.hideDark();
+            opts.utils.hideDark();
             wrapper.css('display', 'none');
             hideImage();
         };
@@ -315,14 +315,16 @@
     };
     
     $.fn.gallery = function(opts) {
-        Utils = new Utils($.extend({
+        var utils = new Utils($.extend({
             animationSpeed: 200
         }), opts);
 
-        Gallery = new Gallery($.extend({
+        var gallery = new Gallery($.extend({
+            utils: utils,
             maxSize: 0.9,
             animationSpeed: 200,
-            selector: this.selector,
+            parent: this.parent(),
+            selector: 'a',
             title: false,
             hideEmbeds: false,
             autoPlay: false,
@@ -330,7 +332,7 @@
         }, opts));
         
         return this.each(function() {
-            Gallery.setImage($(this));
+            gallery.setImage($(this));
         });
     };
 })(jQuery);
